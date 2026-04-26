@@ -1,0 +1,24 @@
+body
+{
+   background-color: #FFFFFF;
+   color: #000000;
+   font-family: Arial;
+   font-weight: normal;
+   font-size: 13px;
+   line-height: 1.1875;
+   margin: 0;
+   padding: 0;
+}
+#DatePicker1 .ui-datepicker
+{
+   font-family: Arial;
+   font-weight: normal;
+   font-size: 13px;
+   z-index: 1003 !important;
+   display: none;
+   margin: 0;
+}
+.ui-datepicker, .ui-datepicker .ui-corner-all
+{
+   border-radius: 0px;
+}

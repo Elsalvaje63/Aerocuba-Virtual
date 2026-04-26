@@ -1,7 +1,12 @@
 FROM php:8.2-apache
 
-# Habilitar extensiones necesarias
-RUN docker-php-ext-install mysqli pdo pdo_mysql
+# Instalar extensiones necesarias incluyendo GD
+RUN apt-get update && apt-get install -y \
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install gd mysqli pdo pdo_mysql
 
 # Copiar todo el código al servidor web
 COPY . /var/www/html/

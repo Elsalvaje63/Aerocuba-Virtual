@@ -10,23 +10,26 @@
 	 */
 ?>
 <?php
-	$db = new mysqli($db_host , $db_username , $db_password , $db_database);
-	$db->set_charset("utf8");
-	if ($db->connect_errno > 0) {
-		die('Unable to connect to database [' . $db->connect_error . ']');
-	}
-	$sql = "set SESSION SQL_MODE='NO_ENGINE_SUBSTITUTION'";
-	if (!$result = $db->query($sql)) {
-	  die('There was an error running the query  [' . $db->error . ']');
-	}
-	$sql = "select language_name, file_sufix from languages order by language_name asc";
-	if (!$result = $db->query($sql)) {
-		die('There was an error running the query [' . $db->error . ']');
-	}
-	$linklanguage = '';
-	$combolanguage = '';
-	while ($row = $result->fetch_assoc()) {
-		$combolanguage .= " <option value='" . $row['file_sufix'] . "'>" . $row['language_name'] . "</option>";
-		$linklanguage .= "<li><a href=index.php?lang=" . $row['file_sufix'] . ">" . $row['language_name'] . "</a></li>";
-	}
+// Conexión a PostgreSQL
+$conn_string = "host=$db_host port=5432 dbname=$db_database user=$db_username password=$db_password";
+$db = pg_connect($conn_string);
+
+if (!$db) {
+    die('Unable to connect to database');
+}
+
+// Consulta para obtener idiomas
+$sql = "SELECT language_name, file_sufix FROM languages ORDER BY language_name ASC";
+$result = pg_query($db, $sql);
+
+if (!$result) {
+    die('There was an error running the query: ' . pg_last_error($db));
+}
+
+$linklanguage = '';
+$combolanguage = '';
+while ($row = pg_fetch_assoc($result)) {
+    $combolanguage .= " <option value='" . $row['file_sufix'] . "'>" . $row['language_name'] . "</option>";
+    $linklanguage .= "<li><a href=index.php?lang=" . $row['file_sufix'] . ">" . $row['language_name'] . "</a></li>";
+}
 ?>
